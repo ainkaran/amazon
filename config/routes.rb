@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
   # get('/products', {to: 'products#new'})
 
+  # will generate all the CRUD for HTTP request and response
   resources :products
 
 end
