@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AmazonJune2017</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+  </head>
+
+  <body>
+    <div>
+      <span><%= link_to 'Home', home_path %> | </span>
+      <span><%= link_to 'About', about_path %> | </span>
+      <span><%= link_to 'Contact', contact_path %> | </span>
+      <span><%= link_to 'New Product', new_product_path %> | </span>
+      <span><%= link_to('All Products', products_path) %></span>
+    </div>
+    <div>
+      <% if flash[:notice] %>
+        <div><%= flash[:notice] %></div>
+      <% elsif %>
+        <div><%= flash[:alert] %></div>
+      <% end %>
+    </div>
+    <%= yield %>
+  </body>
+</html>

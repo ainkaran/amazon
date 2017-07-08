@@ -1,0 +1,23 @@
+<h1>Contact Us</h1>
+
+<% if @name.present? %>
+  <p>
+    Hi <%= @name %>, thanks for contacting us, we will get back to you shortly!
+  </p>
+<% end %>
+
+<%= form_tag contact_path do %>
+  <div>
+    <%= label_tag :name %>
+    <%= text_field_tag :name, nil, placeholder: 'Hello Friend'%>
+  </div>
+  <div>
+    <%= label_tag :email %>
+    <%= text_field_tag :email, nil, placeholder: 'Enter your email'%>
+  </div>
+  <div>
+    <%= label_tag :message %>
+    <%= text_field_tag :message, nil, placeholder: 'Enter your message'%>
+  </div>
+  <%= submit_tag 'Contact Us' %>
+<% end %>
