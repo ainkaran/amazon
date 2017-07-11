@@ -12,7 +12,7 @@ class Product < ApplicationRecord
 # The description must be present
 # The description must have at least 10 characters
 
-
+=begin
   validates(:title, { presence: { message: 'must be provided' },
                       uniqueness: { case_sensitive: false },
                       exclusion: {in: %w(Apple Microsoft Sony), message: "%{value} is reserved."}
@@ -45,6 +45,8 @@ class Product < ApplicationRecord
     search_term = str
     where(["title LIKE? OR description LIKE?", "%#{search_term}%", "%#{search_term}%"]).order(:title, :description)
   end
+  Product.search(...)
+  Product.new.search
 
   # # scope :recent, lambda {|count| order({ created_at: :desc }).limit(count) }
   # def self.search(str)
@@ -77,4 +79,28 @@ class Product < ApplicationRecord
     Rails.logger.warn("The Product #{self.title} is about to be deleted")
   end
 
+=end
+
+  validates :title, presence: true, uniqueness: true
+  validates :description, presence: true
+  # validates(:price, numericality: { greater_than: 0 })
+  validates :price, presence: true, numericality: {greater_than: 0}
+  after_save :capitalize_title
+
+  # scope :search, lambda {|count| order({ created_at: :desc }).limit(count) }
+  def self.search(str)
+    search_term = str
+    where(["title ILIKE? OR description ILIKE?", "%#{search_term}%", "%#{search_term}%"]).order(:title, :description)
+  end
+
+  # A = 9
+  # can be accessed this constant from outside of this class
+  # Product:A
+
+  private
+
+  def capitalize_title
+    self.title = title.capitalize if title.present?
+  end
+  
 end
