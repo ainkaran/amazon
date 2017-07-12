@@ -1,5 +1,8 @@
 class Product < ApplicationRecord
 
+  belongs_to :category
+  has_many :reviews, dependent: :destroy
+
 # we can define validations here, validations will be called before saving
 # or before creating a record and will prevent the saving or creation from
 # happening if the validation rules are not met.
@@ -81,6 +84,8 @@ class Product < ApplicationRecord
 
 =end
 
+
+
   validates :title, presence: true, uniqueness: true
   validates :description, presence: true
   # validates(:price, numericality: { greater_than: 0 })
@@ -102,5 +107,9 @@ class Product < ApplicationRecord
   def capitalize_title
     self.title = title.capitalize if title.present?
   end
-  
+
+  def destroy_notification
+    Rails.logger.warn("The Product #{self.title} is about to be deleted")
+  end 
+
 end

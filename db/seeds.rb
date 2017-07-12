@@ -6,13 +6,25 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+
+Product.destroy_all
+Category.destroy_all
+
+categories = ['Books', 'Technology', 'Computers', 'Movies', 'TV', 'Fashion', 'Music']
+
+categories.each do |category|
+  Category.create(name: category)
+end
+
 1000.times do
+  category = Category.all.sample
+
   p = Product.create(
     title: Faker::Superhero.name,
     description: Faker::Hipster.sentence,
-    price: Faker::Commerce.price
+    price: Faker::Commerce.price,
+    category_id: category.id
   )
-
-  puts "Product #{p.title} created!"
-
 end
+
+puts "#{Product.count} products created!"

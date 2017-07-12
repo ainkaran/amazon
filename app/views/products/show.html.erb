@@ -2,10 +2,38 @@
 <p><%= @product.description %></p>
 <p>$<%= "%.02f" % @product.price %></p>
 <p><%= @product.sale_price %></p>
+<p>Category:<%= @product.sale_price %></p>
+<p>Category: <%= @product.category.name %></p>
+
 
 <%= link_to 'Edit', edit_product_path(@product) %>
 <%# When you use `method: :delete`, Rails will use
 Javascript to mimick a delete request to the server %>
-<%= link_to 'Delete',
-  product_path(@product),
-  method: :delete %>
+<%= link_to 'Delete', product_path(@product), method: :delete %>
+
+<div>
+  <h3>Add a Review </h3>
+  <%= form_for([@product, Review.new]) do |f| %>
+    <div>
+      <%= f.label :body %>
+      <%= f.text_area :body %>
+    </div>
+    <div>
+      <%= f.label :rating %>
+      <%= f.select :rating, [5,4,3,2,1] %>
+    </div>
+    <%= f.submit %>
+  <% end %>
+</div>
+
+<div>
+  <% @product.reviews.each do |review| %>
+    <div>
+      <p><%= review.body %></p>
+      <p>Rating: <%= review.rating %></p>
+      <p><%= link_to 'Delete', product_review_path(@product, review),
+              method: :delete, data: { confirm: 'Are you sure?'} %>
+      </p>
+    </div>
+  <% end %>
+</div>
