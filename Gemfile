@@ -34,7 +34,9 @@ gem 'cancancan'
 
 gem 'cowsay'
 
-gem 'faker'
+gem 'faker', github: 'stympy/faker'
+
+gem 'rails_12factor', group: :production
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

@@ -1,6 +1,5 @@
 # this files helps us define all authorization rules for our application, we can
 # these rules in our controllers and views throughout our application.
-
 class Ability
   include CanCan::Ability
 
@@ -11,6 +10,7 @@ class Ability
   # already have that)
 
   def initialize(user)
+
     # user -> current_user
     # if the user is not signed in then `user` will be `nil`
 
@@ -25,19 +25,18 @@ class Ability
     # in this rule we're saying: the user can `manage` meaning do any action on
     # the question object if `ques.user == user` which means if the owner of
     # the question is the currently signed in user
-    can :manage, Product do |p|
-      p.user == user
+    can :manage, Product do |product|
+      product.user == user
     end
 
-    can :destroy, Review do |rev|
-      rev.user == user || rev.question.user == user
+    can :destroy, Review do |review|
+      review.user == user || review.product.user == user
     end
 
     # remember that this only defines the rules, you still have to enforce the
-    # rules yourself by actu  ally using those rules in the controllers and views
+    # rules yourself by actually using those rules in the controllers and views
     # the advantage is that all of our authoization rules are in one file so we
     # only have to come and change this file when authoization rules change.
-
 
     # Define abilities for the passed in user here. For example:
     #
