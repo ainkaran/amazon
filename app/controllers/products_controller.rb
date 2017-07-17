@@ -1,5 +1,18 @@
 class ProductsController < ApplicationController
+
+  # `before_action` can be used to run before any action in a controller.
+  # The second argument is a symbol named after the method we would to run.
+  # In this example, the before_action calls the find_question before say
+  # the index, or new, etc.
+
+  before_action :authenticate_user!, except: [:index, :show]
+
   before_action :find_product, only: [:show, :edit, :update, :destroy]
+  # We can filter which methods the `before_action` will be called
+  # by proving an `only:` argument giving an array symbols named after the actions.
+  # There is also `except:`.
+
+  before_action :authorize_user!, only: [:edit, :destroy, :update]
 
   def index
     # @products = Product.order(created_at: :desc)
@@ -19,6 +32,12 @@ class ProductsController < ApplicationController
       # redirect_to home_path
       # redirect_to new_product_path
       redirect_to @product
+
+      # flash[:notice] = "Product created successfully"
+      # redirect_to product_path(@product)
+
+      # flash[:notice] = "Product created successfully"
+      # redirect_to product_path(@product), notice: "Product created successfully"
     else
       flash[:alert] = "Problem creating your product"
       render :new

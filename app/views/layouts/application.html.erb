@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>AmazonJune2017</title>
+    <title>Amazon</title>
     <%= csrf_meta_tags %>
 
-    <%= stylesheet_link_tag    'application', media: 'all' %>
-    <%= javascript_include_tag 'application' %>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   </head>
 
   <body>
@@ -15,7 +15,20 @@
       <span><%= link_to 'Contact', contact_path %> | </span>
       <span><%= link_to 'New Product', new_product_path %> | </span>
       <span><%= link_to('All Products', products_path) %></span>
+      <% if user_signed_in? %>
+        |
+        <span>Hello, <%= current_user.full_name %>!</span>
+        |
+        <%= link_to 'Sign Out', session_path, method: :delete %>
+
+        <% else %>
+        |
+        <%= link_to('Sign In', new_session_path) %>
+        |
+        <%= link_to('Sign Up', new_user_path) %>
+        <% end %>
     </div>
+
     <div>
       <% if flash[:notice] %>
         <div><%= flash[:notice] %></div>
