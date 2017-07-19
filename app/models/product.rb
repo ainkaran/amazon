@@ -3,6 +3,8 @@ class Product < ApplicationRecord
   belongs_to :category
   has_many :reviews, dependent: :destroy
 
+  belongs_to :user
+
 # we can define validations here, validations will be called before saving
 # or before creating a record and will prevent the saving or creation from
 # happening if the validation rules are not met.
@@ -102,6 +104,7 @@ class Product < ApplicationRecord
   # can be accessed this constant from outside of this class
   # Product:A
 
+
   private
 
   def capitalize_title
@@ -110,6 +113,6 @@ class Product < ApplicationRecord
 
   def destroy_notification
     Rails.logger.warn("The Product #{self.title} is about to be deleted")
-  end 
+  end
 
 end

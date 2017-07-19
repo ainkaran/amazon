@@ -12,7 +12,7 @@ class UsersController < ApplicationController
       redirect_to home_path, notice: 'Thank you for signing up!'
     else
       flash.now[:alert] = @user.errors.full_messages.join(',')
-      render new
+      render :new
     end
   end
 
