@@ -1,8 +1,33 @@
 class Product < ApplicationRecord
 
-  belongs_to :category
+  # Like `belongs_to`, `has_many` tells Rails that Product is associated to
+  # the Review model.
   has_many :reviews, dependent: :destroy
+  # `dependent: :destroy` will delete all associated reviews to the product
+  # before the product is deleted.
 
+  # `dependent: :nullify` will update the `product_id` in all associated reviews
+  # to `NULL` before the is deleted.
+
+  # `has_many` adds many convenience instance methods to the model:
+  #  reviews
+  #  reviews<<(object, ...)
+  #  reviews.delete(object, ...)
+  #  reviews.destroy(object, ...)
+  #  reviews=(objects)
+  #  reviews_ids
+  #  reviews_ids=(ids)
+  #  reviews.clear
+  #  reviews.empty?
+  #  reviews.size
+  #  reviews.find(...)
+  #  reviews.where(...)
+  #  reviews.exists?(...)
+  #  reviews.build(attributes = {}, ...)
+  #  reviews.create(attributes = {})
+  #  reviews.create!(attributes = {})
+
+  belongs_to :category
   belongs_to :user
 
 # we can define validations here, validations will be called before saving
@@ -86,12 +111,24 @@ class Product < ApplicationRecord
 
 =end
 
+  # Another format: validates :title, presence: true, uniqueness: true
+  validates(:title, { presence: { message: 'must be provided' },
+                      uniqueness: true
+                    })
 
+  # Another format: validates :description, presence: true
+  validates(:description, { presence: true, length: { minimum: 5, maximum: 2000 }})
 
-  validates :title, presence: true, uniqueness: true
-  validates :description, presence: true
   # validates(:price, numericality: { greater_than: 0 })
   validates :price, presence: true, numericality: {greater_than: 0}
+
+  # validates(:view_count, numericality: { greater_than_or_equal_to: 0 })
+
+  validate :no_monkey
+
+  # after_initialize :set_defaults
+
+  # before_validation :titleize_title
   after_save :capitalize_title
 
   # scope :search, lambda {|count| order({ created_at: :desc }).limit(count) }
@@ -100,12 +137,30 @@ class Product < ApplicationRecord
     where(["title ILIKE? OR description ILIKE?", "%#{search_term}%", "%#{search_term}%"]).order(:title, :description)
   end
 
+  # scope :recent, lambda {|count| order({ created_at: :desc }).limit(count) }
+  def self.recent(count)
+    order({ created_at: :desc }).limit(count)
+  end
+
   # A = 9
   # can be accessed this constant from outside of this class
   # Product:A
 
-
   private
+
+  def no_monkey
+    if title.present? && title.downcase.include?('monkey')
+      errors.add(:title, 'No monkey please! 🙈')
+    end
+  end
+
+  # def set_defaults
+  #   self.view_count ||= 0
+  # end
+
+  # def titleize_title
+  #   self.title = title.titleize if title.present?
+  # end
 
   def capitalize_title
     self.title = title.capitalize if title.present?

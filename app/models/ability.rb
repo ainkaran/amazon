@@ -18,19 +18,25 @@ class Ability
     # User so we don't have to check if `user` is nil all the time.
     user ||= User.new
 
+    # this says that if the `is_admin?` methods returns true then the user is
+    # is able to `manage` meaning do any action of any model in the application
+    if user.is_admin?
+      can :manage, :all
+    end
+
     # DSL -> Domain Specific Language: Ruby code written in a certain way to
     #                                  looks like its own language but keep in
     #                                  mind it's just Ruby code
 
     # in this rule we're saying: the user can `manage` meaning do any action on
-    # the question object if `ques.user == user` which means if the owner of
-    # the question is the currently signed in user
-    can :manage, Product do |product|
-      product.user == user
+    # the product object if `prod.user == user` which means if the owner of
+    # the product is the currently signed in user
+    can :manage, Product do |prod|
+      prod.user == user
     end
 
-    can :destroy, Review do |review|
-      review.user == user || review.product.user == user
+    can :destroy, Review do |rev|
+      rev.user == user || rev.product.user == user
     end
 
     # remember that this only defines the rules, you still have to enforce the
