@@ -25,7 +25,10 @@ class ProductsController < ApplicationController
 
   def create
     @product = Product.new(product_params)
+
     # byebug
+
+    @product.user = current_user
 
     if @product.save
       flash[:notice] = "Product created successfully"
@@ -39,6 +42,7 @@ class ProductsController < ApplicationController
       # flash[:notice] = "Product created successfully"
       # redirect_to product_path(@product), notice: "Product created successfully"
     else
+      # byebug
       flash[:alert] = "Problem creating your product"
       render :new
     end

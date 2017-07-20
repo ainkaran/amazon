@@ -11,6 +11,9 @@ require 'rails_helper'
 
 RSpec.describe Product, type: :model do
   # pending "add some examples to (or delete) #{__FILE__}"
+  let(:category) {FactoryGirl.create(:category)}
+  let(:user) {FactoryGirl.create(:user)}
+
 
 =begin
   Test drive the following:
@@ -28,7 +31,10 @@ RSpec.describe Product, type: :model do
     attributes = {
       title: 'Apple',
       price: '10',
-      description: 'nice apple'
+      description: 'nice apple',
+      price: 1000,
+      user_id: user.id,
+      category_id: category.id
     }
     attributes.merge(new_attributes)
   end
