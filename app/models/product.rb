@@ -126,7 +126,7 @@ class Product < ApplicationRecord
 
   validate :no_monkey
 
-  # after_initialize :set_defaults
+  after_initialize :set_defaults
 
   # before_validation :titleize_title
   after_save :capitalize_title
@@ -154,9 +154,9 @@ class Product < ApplicationRecord
     end
   end
 
-  # def set_defaults
-  #   self.view_count ||= 0
-  # end
+  def set_defaults
+    self.price ||= 1.0
+  end
 
   # def titleize_title
   #   self.title = title.titleize if title.present?

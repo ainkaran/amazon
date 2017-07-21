@@ -64,6 +64,26 @@ RSpec.describe Product, type: :model do
         expect(p.title).to eq('Hey buddy')
       end
     end
+
+    context 'description' do
+      it "requires a description" do
+        product = Product.new(valid_attributes({ description: nil }))
+        expect(product).to be_invalid
+      end
+    end
+
+    context 'price' do
+      it "sets the default price to 1 if none is given" do
+        product = Product.new(valid_attributes({ price: nil }))
+        expect(product.price).to eq(1.0)
+      end
+
+      it "requires the price to be greater than 0" do
+        product = Product.new(valid_attributes({ price: 0 }))
+        product.save
+        expect(product.errors.messages).to have_key(:price)
+      end
+    end
   end
 
   describe 'validate_search' do
@@ -85,7 +105,5 @@ RSpec.describe Product, type: :model do
       end
     end
   end
-
-
 
 end

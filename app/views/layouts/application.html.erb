@@ -32,7 +32,7 @@
     <div>
       <% if flash[:notice] %>
         <div><%= flash[:notice] %></div>
-      <% elsif %>
+      <% elsif flash[:alert] %>
         <div><%= flash[:alert] %></div>
       <% end %>
     </div>

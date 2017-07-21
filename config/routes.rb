@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
+  root 'welcome#index'
+
   get('/', {to: 'welcome#index', as: 'home'})
   # get '/', {to: 'welcome#index'}
   # get '/', to: 'welcome#index'
@@ -40,6 +42,10 @@ Rails.application.routes.draw do
   # Even though resource is singular and we gave an argument (i.e. :session)
   # that is singular, it still expects the controller to be named in plural
   # (i.e. SessionsController)
+
+  # resources :sessions, only: [:new, :create] do
+  #   delete :destroy, on: :collection
+  # end
 
   resource :session, only: [:new, :create, :destroy]
   resources :users, only: [:new, :create]
